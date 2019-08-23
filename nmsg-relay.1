@@ -1,0 +1,211 @@
+.TH nmsg-relay 1
+
+.SH NAME
+
+nmsg-relay \- Relay NMSG data from local datagram sockets to Farsight Security SIE
+
+.SH SYNOPSIS
+
+.B nmsg-relay -apikey (\fIkey\fB|\fIkeyfile-path\fB)
+.br
+.B "          -channel \fIchannel-number\fB"
+.br
+.B "          -config \fIfile\fB"
+.br
+.B "          -input (\fIaddr/port\fB|\fIaddr/lowport..highport\fB)"
+.br
+.B "          [ -stats_interval \fIduration\fB] [--flush \fIduration\fB ]
+.br
+.B "          [ -heartbeat \fIduration\fB] [--retry \fIduration\fB ]
+.br
+.B "          wss://\fIserver\fB/[session/\fIsession-name\fB]"
+.br
+.B "          [ wss://\fIserver2\fB/[session/\fIsession-name\fB] ]"
+
+.B env NMSG_RELAY_CONFIG=\fI/path/to/config.yaml\fB nmsg-relay
+
+.B nmsg-relay -version
+
+.SH DESCRIPTION
+
+.B nmsg-relay
+collects NMSG data from a datagram socket and relays it to a server
+for publication on the Farsight Security Information Exchange (SIE).
+
+The servers are specified on the command line or as a space separated
+list of URIs in the environment variable \fBNMSG_RELAY_SERVERS\fR.
+The optional \fI/session/<name>\fR path on the URI identifies different
+sessions to the server operator and defaults to \fI/session/nmsg-relay-upload\fR.
+
+Operation of \fBnmsg-relay\fR requires an API key, channel, input,
+and one or more servers. These values can be specified as command line
+options, environment variables, or in an optional configuration file
+as described below.
+
+.SH OPTIONS
+
+.TP
+.B -apikey (\fIkey\fB|\fIkeyfile\fB)
+Provides the API Key to authenticate the connection to the server. The
+key may be provided on the command line, or a path to a file containing
+the key may be given instead (e.g., to prevent the key from appearing 
+in 'ps' output).
+
+.TP
+.B -channel \fIchannel-number\fB
+Provides the SIE channel on which the data will be published.
+
+.TP
+.B -config \fIfile\fB
+Reads configuration from \fIfile\fB
+
+.TP
+.B -flush \fIduration\fB
+Specifies the maximum length of time data will be buffered before
+being uploaded.
+The \fIduration\fR argument format is a number followed by a unit, e.g.
+"10s" for ten seconds, "5m" for five minutes. The default is 500ms.
+
+.TP
+.B -heartbeat \fIduration\fB
+Specifies the interval at which \fBnmsg-relay\fR sends a heartbeat
+message to ensure the connection to the server is kept alive.
+The \fIduration\fR argument format is a number followed by a unit, e.g.
+"10s" for ten seconds, "5m" for five minutes. The default is 30s.
+
+.TP
+.B -input (\fIaddr/port\fB|\fIaddr/lowport..highport\fB)
+Specifies the address or addresses on which \fBnmsg-relay\fR will listen
+for NMSG data. If specified in \fIaddr/port\fR form, \fBnmsg-relay\fR will
+open and listen on a single port. If specified with \fIaddr/lowport..highport\fR
+form, \fBnmsg-relay\fR will listen for NMSG data on \fIaddr\fR using a
+contiguous range of ports between \fIlowport\fR and \fIhighport\fR, inclusive.
+
+.TP
+.B -retry \fIduration\fB
+Specifies the time \fBnmsg-relay\fR waits to re-establish a connection after
+it fails.
+The \fIduration\fR argument format is a number followed by a unit, e.g.
+"10s" for ten seconds, "5m" for five minutes. The default is 30s.
+
+.TP
+.B -stats_interval \fIduration\fB
+Specifies the frequency with which \fBnmsg-relay\fR prints a statistics
+log to stderr.
+The \fIduration\fR argument format is a number followed by a unit, e.g.
+"10s" for ten seconds, "5m" for five minutes. The default is 0s, for no
+statistics output.
+
+.TP
+.B -version
+Prints the program's version and exits.
+
+.SH ENVIRONMENT
+
+\fBnmsg-relay\fR can accept any of the above options via environment
+variables.
+
+.TP
+.B NMSG_RELAY_APIKEY
+corresponds to \fB-apikey\fR option
+
+.TP
+.B NMSG_RELAY_CHANNEL
+corresponds to \fB-channel\fR option
+
+.TP
+.B NMSG_RELAY_FLUSH
+corresponds to \fB-flush\fR option
+
+.TP
+.B NMSG_RELAY_HEARTBEAT
+corresponds to \fB-heartbeat\fR option
+
+.TP
+.B NMSG_RELAY_INPUT
+corresponds to \fB-input\fR option
+
+.TP
+.B NMSG_RELAY_RETRY
+corresponds to \fB-retry\fR option
+
+.TP
+.B NMSG_RELAY_STATS_INTERVAL
+corresponds to \fB-stats_interval\fR option
+
+In addition, the \fBNMSG_RELAY_CONFIG\fR environment variable, if set,
+is interpreted as a path to a configuration file in YAML format.
+The \fBNMSG_RELAY_SERVERS\fR variable may contain a space-separated list of
+server URIs.
+
+.SH FILES
+
+If a configuration file path is specified in the \fBNMSG_RELAY_CONFIG\fR
+environment variable or with the \fB-config\fR option, \fBnmsg-relay\fR
+reads the config file as a YAML dictionary. The keys in this dictionary
+include:
+
+.TP
+.B apikey
+corresponds to \fB-apikey\fR option
+
+.TP
+.B channel
+corresponds to \fB-channel\fR option
+
+.TP
+.B flush
+corresponds to \fB-flush\fR option
+
+.TP
+.B heartbeat
+corresponds to \fB-heartbeat\fR option
+
+.TP
+.B input
+corresponds to \fB-input\fR option
+
+.TP
+.B retry
+corresponds to \fB-retry\fR option
+
+.TP
+.B stats_interval
+corresponds to \fB-stats_interval\fR option
+
+An additional \fIservers\fR key may contain a list of server URIs.
+
+.SH EXAMPLE
+
+Use nmsg-relay to submit data from loopback broadcast port 8430 to
+channel 200 at \fIsubmit.sie-network.net\fR.
+
+.nf
+        % nmsg-relay -channel 200 -input 127.255.255.255/8430 \\
+                -apikey /etc/nmsg-relay.apikey \\
+                wss://submit.sie-network.net/session/dnsqr-upload
+.fi
+
+Same as above, but with environment:
+
+.nf
+        % env   NMSG_RELAY_CHANNEL=200 \\
+                NMSG_RELAY_INPUT=127.255.255.255/8430 \\
+                NMSG_RELAY_APIKEY=<APIKey> \\
+                NMSG_RELAY_SERVERS=wss://submit.sie-network.net/session/dnsqr-upload \\
+                        nmsg-relay
+
+.fi
+
+The above can be fed with:
+
+.nf
+        % env DNSQR_RES_ADDRS="<resolver IPs>" DNSQR_CAPTURE_RD=0 \\
+                nmsgtool -T dnsqr -i <interface> -s 127.255.255.255/8430
+.nf
+
+for a basic passive DNS sensor.
+
+.SH SEE ALSO
+
+.B nmsgtool(1)
