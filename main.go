@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/farsightsec/go-nmsg"
+	_ "github.com/farsightsec/go-nmsg/nmsg_base"
 	"github.com/farsightsec/sielink/client"
 )
 
@@ -47,7 +48,7 @@ func startClient(config *Config) client.Client {
 	return cli
 }
 
-func runInputLoop(input nmsg.Input, output nmsg.Output, addr net.Addr, wg *sync.WaitGroup) {
+func runInputLoop(config *Config, input nmsg.Input, output nmsg.Output, addr net.Addr, wg *sync.WaitGroup) {
 	for {
 		p, err := input.Recv()
 		if err != nil {
@@ -57,7 +58,9 @@ func runInputLoop(input nmsg.Input, output nmsg.Output, addr net.Addr, wg *sync.
 			log.Printf("Input error on %s: %v", addr, err)
 			break
 		}
-		output.Send(p)
+		if config.MsgTypes.Pass(p) {
+			output.Send(p)
+		}
 	}
 	output.Close()
 	wg.Done()
@@ -102,7 +105,7 @@ func publish(config *Config, cli client.Client) {
 		output.SetMaxSize(nmsg.MaxContainerSize, 16*nmsg.MaxContainerSize)
 
 		wg.Add(1)
-		go runInputLoop(input, output, addr, &wg)
+		go runInputLoop(config, input, output, addr, &wg)
 	}
 
 	go runInputStats(config.Input.String(), inputs, config.StatsInterval.Duration)
