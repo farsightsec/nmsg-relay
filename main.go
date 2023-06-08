@@ -17,6 +17,7 @@ import (
 
 	"github.com/farsightsec/go-nmsg"
 	_ "github.com/farsightsec/go-nmsg/nmsg_base"
+	_ "github.com/farsightsec/go-nmsg_sie"
 	"github.com/farsightsec/sielink/client"
 )
 
