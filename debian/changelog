@@ -1,3 +1,9 @@
+nmsg-relay (0.3.0-1) debian-fsi; urgency=medium
+
+  * Add filtering by message type.
+
+ -- Farsight Security, Inc. <software@farsightsecurity.com>  Wed, 27 Sep 2023 19:48:16 +0000
+
 nmsg-relay (0.2.0-1) debian-farsightsec; urgency=medium
 
   * Initial public release.

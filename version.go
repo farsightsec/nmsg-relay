@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2023 DomainTools LLC
  * Copyright (c) 2018 Farsight Security, Inc.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -8,4 +9,4 @@
 
 package main
 
-var Version = "0.2.0"
+var Version = "0.3.0"
