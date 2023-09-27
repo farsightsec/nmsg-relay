@@ -2,15 +2,20 @@ Source: nmsg-relay
 Section: net
 Priority: optional
 Maintainer: Farsight Security, Inc. <software@farsightsecurity.com>
-Build-Depends: debhelper (>= 9), dh-golang, golang-go,
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-golang,
+ golang-any,
  golang-gopkg-yaml.v2-dev,
  golang-goprotobuf-dev,
  golang-github-farsightsec-go-config-dev,
  golang-github-farsightsec-go-config-env-dev,
- golang-github-farsightsec-go-nmsg-dev,
+ golang-github-farsightsec-go-nmsg-dev (>= 0.3.0~),
+ golang-github-farsightsec-go-nmsg-base-dev,
+ golang-github-farsightsec-go-nmsg-sie-dev,
  golang-github-farsightsec-sielink-dev,
  golang-github-farsightsec-sielink-client-dev
-Standards-Version: 3.9.8
+Standards-Version: 4.5.1
 XS-Go-Import-Path: github.com/farsightsec/nmsg-relay
 
 Package: nmsg-relay

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2023 DomainTools LLC
  * Copyright (c) 2018 Farsight Security, Inc.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -26,6 +27,80 @@ import (
 	nmsg "github.com/farsightsec/go-nmsg"
 )
 
+type mType struct{
+	vid uint32
+	mtype uint32
+}
+
+type mTypeFilter []mType
+
+func (m *mTypeFilter) Set(s string) error {
+	// handle comma-separated values
+	cl := strings.Split(s, ",")
+	if len(cl) > 1 {
+		for _, t := range cl {
+			m.Set(t)
+		}
+	}
+
+	s = strings.TrimSpace(s)
+	l := strings.Split(s, ":")
+	if len(l) != 2 {
+		return fmt.Errorf("'%s' not in vname:mtype format", s)
+	}
+
+	vname, typename :=  l[0], l[1]
+	vid, mtype, err := nmsg.MessageTypeByName(vname, typename)
+	if err != nil {
+		return err
+	}
+	*m = append(*m, mType{vid, mtype})
+	return nil
+}
+
+func (m *mTypeFilter) String() string {
+	var l []string
+	for _, t := range *m {
+		vname, mname, err := nmsg.MessageTypeName(t.vid, t.mtype)
+		if err != nil {
+			continue
+		}
+		l = append(l, strings.Join([]string{vname, mname}, ":"))
+	}
+	return strings.Join(l, ",")
+}
+
+func (m *mTypeFilter) Pass(p *nmsg.NmsgPayload) bool {
+	if len(*m) == 0 {
+		return true
+	}
+	vid := p.GetVid()
+	mtype := p.GetMsgtype()
+	for _, f := range *m {
+		if vid != f.vid {
+			continue
+		}
+		if mtype != f.mtype {
+			continue
+		}
+		return true
+	}
+	return false
+}
+
+func (m *mTypeFilter) UnmarshalYAML(u func(interface{}) error) error {
+	var ss []string
+	if err := u(&ss); err != nil {
+		return err
+	}
+	for _, s := range ss {
+		if err := m.Set(s); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Config represents the global configuration of the client.
 type Config struct {
 	Servers       []config.URL    `yaml:"servers"`
@@ -36,6 +111,7 @@ type Config struct {
 	Flush         config.Duration `yaml:"flush"`
 	Input         nmsg.Sockspec   `yaml:"input"`
 	StatsInterval config.Duration `yaml:"stats_interval"`
+	MsgTypes      mTypeFilter     `yaml:"message_types"`
 }
 
 type uint32val uint32
@@ -111,6 +187,7 @@ func parseConfig() (conf *Config, err error) {
 	flag.Var(&conf.Input, "input", "address for datagram input")
 	flag.DurationVar(&conf.StatsInterval.Duration, "stats_interval", 0,
 		"how often to print input statistics (default 0s / no stats)")
+	flag.Var(&conf.MsgTypes, "message_type", "add vname:msgtype to allowed types list (default: allow all types)")
 
 	env.DurationVar(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
 	env.DurationVar(&conf.Retry.Duration, envPrefix+"RETRY")
@@ -120,6 +197,7 @@ func parseConfig() (conf *Config, err error) {
 	env.Var(&conf.Input, envPrefix+"INPUT")
 	env.DurationVar(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
 	env.StringVar(&serverList, envPrefix+"SERVERS")
+	env.Var(&conf.MsgTypes, envPrefix+"MESSAGE_TYPES")
 
 	env.StringVar(&configFilename, envPrefix+"CONFIG")
 	flag.StringVar(&configFilename, "config", configFilename, "read configuration from file")
