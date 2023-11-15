@@ -21,14 +21,14 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/yaml.v2"
 	"github.com/farsightsec/go-config"
 	"github.com/farsightsec/go-config/env"
 	nmsg "github.com/farsightsec/go-nmsg"
+	"gopkg.in/yaml.v2"
 )
 
-type mType struct{
-	vid uint32
+type mType struct {
+	vid   uint32
 	mtype uint32
 }
 
@@ -49,7 +49,7 @@ func (m *mTypeFilter) Set(s string) error {
 		return fmt.Errorf("'%s' not in vname:mtype format", s)
 	}
 
-	vname, typename :=  l[0], l[1]
+	vname, typename := l[0], l[1]
 	vid, mtype, err := nmsg.MessageTypeByName(vname, typename)
 	if err != nil {
 		return err
@@ -167,6 +167,15 @@ func fixURL(u *url.URL) {
 	}
 }
 
+func envErrorHandler(name string, err error) error {
+	if err != nil {
+		println(name, "triggered the following error: ", err.Error())
+		os.Exit(2)
+	}
+
+	return err
+}
+
 func parseConfig() (conf *Config, err error) {
 	var configFilename string
 	var serverList string
@@ -189,16 +198,6 @@ func parseConfig() (conf *Config, err error) {
 		"how often to print input statistics (default 0s / no stats)")
 	flag.Var(&conf.MsgTypes, "message_type", "add vname:msgtype to allowed types list (default: allow all types)")
 
-	env.DurationVar(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
-	env.DurationVar(&conf.Retry.Duration, envPrefix+"RETRY")
-	env.DurationVar(&conf.Flush.Duration, envPrefix+"FLUSH")
-	env.Var(&conf.APIKey, envPrefix+"APIKEY")
-	env.Var((*uint32val)(&conf.Channel), envPrefix+"CHANNEL")
-	env.Var(&conf.Input, envPrefix+"INPUT")
-	env.DurationVar(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
-	env.StringVar(&serverList, envPrefix+"SERVERS")
-	env.Var(&conf.MsgTypes, envPrefix+"MESSAGE_TYPES")
-
 	env.StringVar(&configFilename, envPrefix+"CONFIG")
 	flag.StringVar(&configFilename, "config", configFilename, "read configuration from file")
 	flag.Parse()
@@ -213,7 +212,21 @@ func parseConfig() (conf *Config, err error) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// Parse flags again to override configuration
+	}
+
+	env.ErrorHandler = envErrorHandler
+	env.DurationVar(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
+	env.DurationVar(&conf.Retry.Duration, envPrefix+"RETRY")
+	env.DurationVar(&conf.Flush.Duration, envPrefix+"FLUSH")
+	env.Var(&conf.APIKey, envPrefix+"APIKEY")
+	env.Var((*uint32val)(&conf.Channel), envPrefix+"CHANNEL")
+	env.Var(&conf.Input, envPrefix+"INPUT")
+	env.DurationVar(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
+	env.StringVar(&serverList, envPrefix+"SERVERS")
+	env.Var(&conf.MsgTypes, envPrefix+"MESSAGE_TYPES")
+
+	if configFilename != "" {
+		// Parse flags again to override configuration and environment
 		// values.
 		flag.Parse()
 	}
@@ -256,6 +269,5 @@ func parseConfig() (conf *Config, err error) {
 	if conf.APIKey.String() == "" {
 		err = errors.New("no API key specified")
 	}
-
 	return
 }
