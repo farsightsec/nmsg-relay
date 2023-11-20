@@ -167,19 +167,11 @@ func fixURL(u *url.URL) {
 	}
 }
 
-func envErrorHandler(name string, err error) error {
-	if err != nil {
-		println(name, "triggered the following error: ", err.Error())
-		os.Exit(2)
-	}
-
-	return err
-}
-
 func parseConfig() (conf *Config, err error) {
 	var configFilename string
 	var serverList string
 	var printVersion bool
+	var envConfig = env.NewConfig(true)
 	conf = &Config{}
 
 	flag.BoolVar(&printVersion, "v", false, "Print version and exit")
@@ -198,7 +190,7 @@ func parseConfig() (conf *Config, err error) {
 		"how often to print input statistics (default 0s / no stats)")
 	flag.Var(&conf.MsgTypes, "message_type", "add vname:msgtype to allowed types list (default: allow all types)")
 
-	env.StringVar(&configFilename, envPrefix+"CONFIG")
+	envConfig.Var(&configFilename, envPrefix+"CONFIG")
 	flag.StringVar(&configFilename, "config", configFilename, "read configuration from file")
 	flag.Parse()
 
@@ -214,16 +206,15 @@ func parseConfig() (conf *Config, err error) {
 		}
 	}
 
-	env.ErrorHandler = envErrorHandler
-	env.DurationVar(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
-	env.DurationVar(&conf.Retry.Duration, envPrefix+"RETRY")
-	env.DurationVar(&conf.Flush.Duration, envPrefix+"FLUSH")
-	env.Var(&conf.APIKey, envPrefix+"APIKEY")
-	env.Var((*uint32val)(&conf.Channel), envPrefix+"CHANNEL")
-	env.Var(&conf.Input, envPrefix+"INPUT")
-	env.DurationVar(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
-	env.StringVar(&serverList, envPrefix+"SERVERS")
-	env.Var(&conf.MsgTypes, envPrefix+"MESSAGE_TYPES")
+	envConfig.Var(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
+	envConfig.Var(&conf.Retry.Duration, envPrefix+"RETRY")
+	envConfig.Var(&conf.Flush.Duration, envPrefix+"FLUSH")
+	envConfig.Var(&conf.APIKey, envPrefix+"APIKEY")
+	envConfig.Var((*uint32val)(&conf.Channel), envPrefix+"CHANNEL")
+	envConfig.Var(&conf.Input, envPrefix+"INPUT")
+	envConfig.Var(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
+	envConfig.Var(&serverList, envPrefix+"SERVERS")
+	envConfig.Var(&conf.MsgTypes, envPrefix+"MESSAGE_TYPES")
 
 	if configFilename != "" {
 		// Parse flags again to override configuration and environment
