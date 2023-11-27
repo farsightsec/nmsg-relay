@@ -171,7 +171,7 @@ func parseConfig() (conf *Config, err error) {
 	var configFilename string
 	var serverList string
 	var printVersion bool
-	var envConfig = env.NewConfig(env.ContinueOnError)
+	var envConfig = env.NewConfig(true)
 	conf = &Config{}
 
 	flag.BoolVar(&printVersion, "v", false, "Print version and exit")
