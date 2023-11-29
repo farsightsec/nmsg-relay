@@ -171,7 +171,7 @@ func parseConfig() (conf *Config, err error) {
 	var configFilename string
 	var serverList string
 	var printVersion bool
-	var envConfig = env.NewConfig(true)
+	var envConfig = env.NewConfig(env.ExitOnError)
 	conf = &Config{}
 
 	flag.BoolVar(&printVersion, "v", false, "Print version and exit")
@@ -190,7 +190,7 @@ func parseConfig() (conf *Config, err error) {
 		"how often to print input statistics (default 0s / no stats)")
 	flag.Var(&conf.MsgTypes, "message_type", "add vname:msgtype to allowed types list (default: allow all types)")
 
-	envConfig.Var(&configFilename, envPrefix+"CONFIG")
+	envConfig.StringVar(&configFilename, envPrefix+"CONFIG")
 	flag.StringVar(&configFilename, "config", configFilename, "read configuration from file")
 	flag.Parse()
 
@@ -206,14 +206,14 @@ func parseConfig() (conf *Config, err error) {
 		}
 	}
 
-	envConfig.Var(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
-	envConfig.Var(&conf.Retry.Duration, envPrefix+"RETRY")
-	envConfig.Var(&conf.Flush.Duration, envPrefix+"FLUSH")
+	envConfig.DurationVar(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
+	envConfig.DurationVar(&conf.Retry.Duration, envPrefix+"RETRY")
+	envConfig.DurationVar(&conf.Flush.Duration, envPrefix+"FLUSH")
 	envConfig.Var(&conf.APIKey, envPrefix+"APIKEY")
 	envConfig.Var((*uint32val)(&conf.Channel), envPrefix+"CHANNEL")
 	envConfig.Var(&conf.Input, envPrefix+"INPUT")
-	envConfig.Var(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
-	envConfig.Var(&serverList, envPrefix+"SERVERS")
+	envConfig.DurationVar(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
+	envConfig.StringVar(&serverList, envPrefix+"SERVERS")
 	envConfig.Var(&conf.MsgTypes, envPrefix+"MESSAGE_TYPES")
 
 	if configFilename != "" {
