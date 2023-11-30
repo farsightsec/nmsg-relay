@@ -2,6 +2,8 @@ github.com/dnstap/golang-dnstap v0.4.0 h1:KRHBoURygdGtBjDI2w4HifJfMAhhOqDuktAoka
 github.com/dnstap/golang-dnstap v0.4.0/go.mod h1:FqsSdH58NAmkAvKcpyxht7i4FoBjKu8E4JUPt8ipSUs=
 github.com/farsightsec/go-config v0.0.0-20230417163249-516d934c7368 h1:CuaWxFONeVsOKCq11ODbWRJjQfMlUHSHHWz1niQP+po=
 github.com/farsightsec/go-config v0.0.0-20230417163249-516d934c7368/go.mod h1:DqkG9OTHBNHR/kuETvIzR2Ys0jJeTu/bgaFYXQtvCvE=
+github.com/farsightsec/go-config v0.0.0-20231130004209-eb9def346f48 h1:Oii31smXhGpOOpEIuGkq/N2bKOgCIub9zUrLNODpOUA=
+github.com/farsightsec/go-config v0.0.0-20231130004209-eb9def346f48/go.mod h1:WDQGSWyaSeobQnKmgjQzny0F3w7yTCL/TBpCEPYpdJk=
 github.com/farsightsec/go-nmsg v0.2.1-0.20230602194809-0d1f0f63e5e3 h1:zXALcWo8Siqd43EwqL1Q4LP0wpY1cTTqgxrL+K7w+cg=
 github.com/farsightsec/go-nmsg v0.2.1-0.20230602194809-0d1f0f63e5e3/go.mod h1:DmYBeMw4XxsC49A4pSibKLvbgUT4sucKiRoa4p6CPMU=
 github.com/farsightsec/go-nmsg_sie v0.1.2-0.20230608154303-b9c61e682d7e h1:4GUwyxczvwdSR+cuiHniyvxZR0juzU1tLJ8AGdLyZME=

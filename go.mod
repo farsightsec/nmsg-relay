@@ -3,7 +3,7 @@ module github.com/farsightsec/nmsg-relay
 go 1.18
 
 require (
-	github.com/farsightsec/go-config v0.0.0-20230417163249-516d934c7368
+	github.com/farsightsec/go-config v0.0.0-20231130004209-eb9def346f48
 	github.com/farsightsec/go-nmsg v0.2.1-0.20230602194809-0d1f0f63e5e3
 	github.com/farsightsec/go-nmsg_sie v0.1.2-0.20230608154303-b9c61e682d7e
 	github.com/farsightsec/sielink v0.1.1
