@@ -2,7 +2,8 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: nmsg-relay
 
 Files: *
-Copyright: 2018 Farsight Security, Inc. <software@farsightsecurity.com>
+Copyright: 2023 DomainTools LLC
+           2018 by Farsight Security, Inc.
 License: MPL-2.0
 
 License: MPL-2.0
