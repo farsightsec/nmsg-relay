@@ -20,11 +20,9 @@ Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcomm
 
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 BuildRequires: golang-github-farsightsec-go-nmsg-devel
-#sielink end with devel
-BuildRequires: golang-github-farsightsec-sielink
-BuildRequires: golang-github-golang-protobuf-devel	
-#full long name
-BuildRequires: go-config-devel
+BuildRequires: golang-github-farsightsec-sielink-devel
+BuildRequires: golang-google-protobuf-devel
+BuildRequires: golang-github-farsightsec-config-devel
 
 
 %if %{rhel} == 9 
