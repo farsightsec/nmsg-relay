@@ -21,7 +21,7 @@ Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcomm
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 BuildRequires: golang-github-farsightsec-nmsg-devel
 BuildRequires: golang-github-farsightsec-sielink-devel
-BuildRequires: golang-google-protobuf-devel
+BuildRequires: golang-google-protobuf
 BuildRequires: golang-github-farsightsec-config-devel
 
 %if %{rhel} == 9 
