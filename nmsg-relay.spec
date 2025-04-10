@@ -24,7 +24,6 @@ BuildRequires: golang-github-farsightsec-sielink-devel
 BuildRequires: golang-google-protobuf-devel
 BuildRequires: golang-github-farsightsec-config-devel
 
-
 %if %{rhel} == 9 
 #yaml.v2-devel
 BuildRequires: golang-gopkg-yaml-devel-v2
@@ -42,7 +41,7 @@ BuildRequires: golang-gopkg-yaml-devel-v2
 A lightweight client which reads NMSG input from a datagram socket and submits it to the SIE.
 
 %prep
-%setup -q -n %{repo}-%{commit}
+%setup -q
 
 %build
 mkdir -p /builddir/go/src/github.com/farsightsec
@@ -53,7 +52,6 @@ ln -s $PWD /builddir/go/src/github.com/farsightsec/nmsg-relay
 export GO111MODULE=off 
 export GOPATH=/usr/share/gocode:/builddir/go 
 go build 
-
 
 %install
 install -d -p %{buildroot}%{_bindir}
