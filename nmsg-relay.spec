@@ -50,9 +50,16 @@ ln -s $PWD /builddir/go/src/github.com/farsightsec/nmsg-relay
 %{!?_licensedir:%global license %doc}
 
 # We don't want to download new modules, but we want ones that BuildRequires packages provide
-export GO111MODULE=off
+#export GO111MODULE=off
 # I think this isn't using the chroot or appropriate build directory
 #export GOPATH=/usr/share/gocode:/builddir/go 
+# Debug some things
+echo $GOROOT
+ls $GOROOT
+find $GOROOT
+echo $GOPATH
+ls $GOPATH
+find $GOPATH
 go build 
 
 %install
