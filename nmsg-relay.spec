@@ -19,7 +19,7 @@ URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
-BuildRequires: golang-github-farsightsec-go-nmsg-devel
+BuildRequires: golang-github-farsightsec-nmsg-devel
 BuildRequires: golang-github-farsightsec-sielink-devel
 BuildRequires: golang-google-protobuf-devel
 BuildRequires: golang-github-farsightsec-config-devel
