@@ -11,7 +11,7 @@ package main
 import (
 	"bytes"
 
-	"google.golang.org/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	nmsg "github.com/farsightsec/go-nmsg"
 	"github.com/farsightsec/sielink"
 	"github.com/farsightsec/sielink/client"

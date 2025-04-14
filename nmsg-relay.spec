@@ -26,6 +26,7 @@ BuildRequires: golang-github-farsightsec-nmsg-sie-devel
 BuildRequires: golang-github-farsightsec-nmsg-devel
 BuildRequires: golang-github-farsightsec-sielink-devel
 BuildRequires: golang-github-miekg-dns-devel
+BuildRequires: golang-github-protobuf-devel
 BuildRequires: golang-google-protobuf-devel
 BuildRequires: golang-gopkg-yaml-2-devel
 BuildRequires: golang-x-net-devel
