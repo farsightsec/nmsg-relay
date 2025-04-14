@@ -20,11 +20,13 @@ Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcomm
 
 BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
 BuildRequires: golang-github-dnstap-devel
+BuildRequires: golang-github-farsightsec-config-devel
+BuildRequires: golang-github-farsightsec-framestream-devel
 BuildRequires: golang-github-farsightsec-nmsg-sie-devel
 BuildRequires: golang-github-farsightsec-nmsg-devel
 BuildRequires: golang-github-farsightsec-sielink-devel
+BuildRequires: golang-github-miekg-dns-devel
 BuildRequires: golang-google-protobuf-devel
-BuildRequires: golang-github-farsightsec-config-devel
 
 %if %{rhel} == 9 
 #yaml.v2-devel
