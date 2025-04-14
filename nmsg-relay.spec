@@ -27,6 +27,7 @@ BuildRequires: golang-github-farsightsec-nmsg-devel
 BuildRequires: golang-github-farsightsec-sielink-devel
 BuildRequires: golang-github-miekg-dns-devel
 BuildRequires: golang-google-protobuf-devel
+BuildRequires: golang-x-net-devel
 
 %if %{rhel} == 9 
 #yaml.v2-devel
