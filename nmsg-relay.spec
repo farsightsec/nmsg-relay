@@ -27,18 +27,9 @@ BuildRequires: golang-github-farsightsec-nmsg-devel
 BuildRequires: golang-github-farsightsec-sielink-devel
 BuildRequires: golang-github-miekg-dns-devel
 BuildRequires: golang-google-protobuf-devel
+BuildRequires: golang-gopkg-yaml-2-devel
 BuildRequires: golang-x-net-devel
 BuildRequires: golang-x-sys-devel
-
-%if %{rhel} == 9 
-#yaml.v2-devel
-BuildRequires: golang-gopkg-yaml-devel-v2
-
-%else
-
-BuildRequires: golang-gopkg-yaml-devel-v2 
-
-%endif
 
 %description
 
@@ -57,17 +48,7 @@ ln -s $PWD /builddir/go/src/github.com/farsightsec/nmsg-relay
 
 # We don't want to download new modules, but we want ones that BuildRequires packages provide
 export GO111MODULE=off
-# I think this isn't using the chroot or appropriate build directory
 export GOPATH=/usr/share/gocode:/builddir/go
-# Debug some things
-echo $GOROOT
-ls $GOROOT
-find $GOROOT
-echo $GOPATH
-ls /usr/share/gocode
-find /usr/share/gocode
-ls /builddir/go
-find /builddir/go
 go build 
 
 %install
