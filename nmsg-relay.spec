@@ -50,7 +50,9 @@ ln -s $PWD /builddir/go/src/github.com/farsightsec/nmsg-relay
 # We don't want to download new modules, but we want ones that BuildRequires packages provide
 export GO111MODULE=off
 export GOPATH=/usr/share/gocode:/builddir/go
-go build 
+go build
+ls
+find
 
 %install
 install -d -p %{buildroot}%{_bindir}
