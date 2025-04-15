@@ -56,6 +56,10 @@ go build
 install -d -p %{buildroot}%{_bindir}
 #install %{repo}-%{version} %{buildroot}/%{_bindir}/nmsg-relay
 find
+ls /builddir/build/BUILD/nmsg-relay-0.2.0
+find /builddir/build/BUILD/nmsg-relay-0.2.0
+ls /builddir/go/src/github.com/farsightsec/nmsg-relay
+find /builddir/go/src/github.com/farsightsec/nmsg-relay
 install ./nmsg-relay %{buildroot}/%{_bindir}/nmsg-relay
 install -d -p %{buildroot}%{_mandir}/man1
 install nmsg-relay.1 %{buildroot}%{_mandir}/man1/
