@@ -1,15 +1,5 @@
-%undefine _missing_build_ids_terminate_build
 %global debug_package   %{nil}
-#%global provider        github
-#%global provider_tld    com
-#%global project         farsightsec
-#%global repo            nmsg-relay
 # https://github.com/farsightsec/nmsg-relay
-#%global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
-#%global import_path     %{provider_prefix}
-#%global commit          16fcd3b05a8e2cf8d238c2699b0fc9fb588f4107
-#%global shortcommit     %(c=%{commit}; echo ${c:0:7})
-
 %global goipath         github.com/farsightsec/nmsg-relay
 
 %gometa
