@@ -1,4 +1,5 @@
 %global debug_package   %{nil}
+%define _build_id_links none
 # https://github.com/farsightsec/nmsg-relay
 %global goipath         github.com/farsightsec/nmsg-relay
 
