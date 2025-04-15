@@ -1,18 +1,22 @@
 %undefine _missing_build_ids_terminate_build
 %global debug_package   %{nil}
-%global provider        github
-%global provider_tld    com
-%global project         farsightsec
-%global repo            nmsg-relay
+#%global provider        github
+#%global provider_tld    com
+#%global project         farsightsec
+#%global repo            nmsg-relay
 # https://github.com/farsightsec/nmsg-relay
-%global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
-%global import_path     %{provider_prefix}
-%global commit          16fcd3b05a8e2cf8d238c2699b0fc9fb588f4107
-%global shortcommit     %(c=%{commit}; echo ${c:0:7})
+#%global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
+#%global import_path     %{provider_prefix}
+#%global commit          16fcd3b05a8e2cf8d238c2699b0fc9fb588f4107
+#%global shortcommit     %(c=%{commit}; echo ${c:0:7})
+
+%global goipath         github.com/farsightsec/nmsg-relay
+
+%gometa
 
 Name:           nmsg-relay
 Version:        0.2.0
-Release:	1%{?dist}
+Release:        1%{?dist}
 Summary:        SIE uploader for NMSG data
 License:        MPLv2.0
 URL:            https://%{provider_prefix}
@@ -51,18 +55,10 @@ ln -s $PWD /builddir/go/src/github.com/farsightsec/nmsg-relay
 export GO111MODULE=off
 export GOPATH=/usr/share/gocode:/builddir/go
 go build
-ls
-find
 
 %install
 install -d -p %{buildroot}%{_bindir}
 install %{name}-%{version} %{buildroot}/%{_bindir}/nmsg-relay
-find
-ls /builddir/build/BUILD/nmsg-relay-0.2.0
-find /builddir/build/BUILD/nmsg-relay-0.2.0
-ls /builddir/go/src/github.com/farsightsec/nmsg-relay
-find /builddir/go/src/github.com/farsightsec/nmsg-relay
-#install ./nmsg-relay %{buildroot}/%{_bindir}/nmsg-relay
 install -d -p %{buildroot}%{_mandir}/man1
 install nmsg-relay.1 %{buildroot}%{_mandir}/man1/
 
