@@ -55,8 +55,7 @@ go build
 %install
 install -d -p %{buildroot}%{_bindir}
 #install %{repo}-%{version} %{buildroot}/%{_bindir}/nmsg-relay
-ls -lh nmsg-relay
-file nmsg-relay
+find
 install ./nmsg-relay %{buildroot}/%{_bindir}/nmsg-relay
 install -d -p %{buildroot}%{_mandir}/man1
 install nmsg-relay.1 %{buildroot}%{_mandir}/man1/
