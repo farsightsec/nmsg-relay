@@ -3,13 +3,14 @@
 # https://github.com/farsightsec/nmsg-relay
 %global goipath         github.com/farsightsec/nmsg-relay
 
-%gometa
-
 Name:           nmsg-relay
 Version:        0.2.0
 Release:        1%{?dist}
 Summary:        SIE uploader for NMSG data
 License:        MPLv2.0
+
+%gometa
+
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 
