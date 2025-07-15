@@ -41,12 +41,11 @@ BuildRequires: golang-x-sys-devel
 
 A lightweight client which reads NMSG input from a datagram socket and submits it to the SIE.}
 
-#Name:           nmsg-relay
+Name:           nmsg-relay
 Version:        0.2.0
 Release:        1%{?dist}
 Summary:        SIE uploader for NMSG data
 %gometa
-Name:           %{goname}
 License:        MPLv2.0
 #URL:            https://%{provider_prefix}
 #Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
