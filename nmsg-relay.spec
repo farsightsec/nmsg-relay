@@ -47,30 +47,13 @@ Release:        1%{?dist}
 Summary:        SIE uploader for NMSG data
 %gometa
 License:        MPLv2.0
-#URL:            https://%{provider_prefix}
-#Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 URL:            %{gourl}
 Source0:        %{gosource}
 
-BuildRequires:  %{?go_compiler:compiler(go-compiler)}%{!?go_compiler:golang}
-BuildRequires: golang-github-dnstap-devel
-BuildRequires: golang-github-farsightsec-config-devel
-BuildRequires: golang-github-farsightsec-framestream-devel
-BuildRequires: golang-github-farsightsec-nmsg-sie-devel
-BuildRequires: golang-github-farsightsec-nmsg-devel
-BuildRequires: golang-github-farsightsec-sielink-devel
-BuildRequires: golang-github-miekg-dns-devel
-BuildRequires: golang-github-protobuf-devel
-BuildRequires: golang-google-protobuf-devel
-BuildRequires: golang-gopkg-yaml-2-devel
-BuildRequires: golang-x-net-devel
-BuildRequires: golang-x-sys-devel
+%go_generate_buildrequires
 
 %description
-
-%{summary}
-
-A lightweight client which reads NMSG input from a datagram socket and submits it to the SIE.
+%{common_description}
 
 %gopkg
 
