@@ -50,6 +50,7 @@ License:        MPLv2.0
 URL:            %{gourl}
 Source0:        %{gosource}
 
+%generate_buildrequires
 %go_generate_buildrequires
 
 %description
