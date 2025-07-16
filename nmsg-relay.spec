@@ -50,9 +50,6 @@ License:        MPLv2.0
 URL:            %{gourl}
 Source0:        %{gosource}
 
-%generate_buildrequires
-%go_generate_buildrequires
-
 %description
 %{common_description}
 
@@ -61,6 +58,9 @@ Source0:        %{gosource}
 %prep
 %goprep -A
 %autopatch -p1
+
+%generate_buildrequires
+%go_generate_buildrequires
 
 %build
 mkdir -p /builddir/go/src/github.com/farsightsec
