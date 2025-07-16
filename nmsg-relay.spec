@@ -55,12 +55,16 @@ Source0:        %{gosource}
 
 %gopkg
 
+%generate_buildrequires
+%goprep -A
+%autopatch -p1
+mkdir -p /builddir/go/src/github.com/farsightsec
+ln -s $PWD /builddir/go/src/github.com/farsightsec/nmsg-relay
+%go_generate_buildrequires
+
 %prep
 %goprep -A
 %autopatch -p1
-
-%generate_buildrequires
-%go_generate_buildrequires
 
 %build
 mkdir -p /builddir/go/src/github.com/farsightsec
