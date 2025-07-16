@@ -76,7 +76,6 @@ install -d -p %{buildroot}%{_mandir}/man1
 install nmsg-relay.1 %{buildroot}%{_mandir}/man1/
 %gopkginstall
 
-
 %if %{with check}
 %check
 %gocheck
