@@ -15,6 +15,7 @@ done ;\
 sort -u -o devel.file-list devel.file-list
 %global gopkgfiles %files -n %{goname}-devel -f devel.file-list
 %global gocheck echo "skipping gocheck on rhel8"
+%endif
 
 %global debug_package %{nil}
 %define _build_id_links none
