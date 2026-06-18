@@ -39,7 +39,10 @@ func (m *mTypeFilter) Set(s string) error {
 	cl := strings.Split(s, ",")
 	if len(cl) > 1 {
 		for _, t := range cl {
-			m.Set(t)
+			err := m.Set(t)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -249,16 +252,16 @@ func parseConfig() (conf *Config, err error) {
 	}
 
 	if conf.Channel == 0 {
-		err = errors.New("no channel specified")
+		err = errors.Join(err, errors.New("no channel specified"))
 	}
 	if len(conf.Servers) == 0 {
-		err = errors.New("no servers specified")
+		err = errors.Join(err, errors.New("no servers specified"))
 	}
 	if conf.Input.Addr == nil {
-		err = errors.New("no input address specified")
+		err = errors.Join(err, errors.New("no input address specified"))
 	}
 	if conf.APIKey.String() == "" {
-		err = errors.New("no API key specified")
+		err = errors.Join(err, errors.New("no API key specified"))
 	}
 	return
 }
