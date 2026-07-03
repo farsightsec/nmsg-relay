@@ -174,7 +174,6 @@ func parseConfig() (conf *Config, err error) {
 	var configFilename string
 	var serverList string
 	var printVersion bool
-	var envConfig = env.NewConfig(env.ExitOnError)
 	conf = &Config{}
 
 	flag.BoolVar(&printVersion, "v", false, "Print version and exit")
@@ -193,7 +192,17 @@ func parseConfig() (conf *Config, err error) {
 		"how often to print input statistics (default 0s / no stats)")
 	flag.Var(&conf.MsgTypes, "message_type", "add vname:msgtype to allowed types list (default: allow all types)")
 
-	envConfig.StringVar(&configFilename, envPrefix+"CONFIG")
+	env.DurationVar(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
+	env.DurationVar(&conf.Retry.Duration, envPrefix+"RETRY")
+	env.DurationVar(&conf.Flush.Duration, envPrefix+"FLUSH")
+	env.Var(&conf.APIKey, envPrefix+"APIKEY")
+	env.Var((*uint32val)(&conf.Channel), envPrefix+"CHANNEL")
+	env.Var(&conf.Input, envPrefix+"INPUT")
+	env.DurationVar(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
+	env.StringVar(&serverList, envPrefix+"SERVERS")
+	env.Var(&conf.MsgTypes, envPrefix+"MESSAGE_TYPES")
+
+	env.StringVar(&configFilename, envPrefix+"CONFIG")
 	flag.StringVar(&configFilename, "config", configFilename, "read configuration from file")
 	flag.Parse()
 
@@ -207,20 +216,7 @@ func parseConfig() (conf *Config, err error) {
 		if err != nil {
 			log.Fatal(err)
 		}
-	}
-
-	envConfig.DurationVar(&conf.Heartbeat.Duration, envPrefix+"HEARTBEAT")
-	envConfig.DurationVar(&conf.Retry.Duration, envPrefix+"RETRY")
-	envConfig.DurationVar(&conf.Flush.Duration, envPrefix+"FLUSH")
-	envConfig.Var(&conf.APIKey, envPrefix+"APIKEY")
-	envConfig.Var((*uint32val)(&conf.Channel), envPrefix+"CHANNEL")
-	envConfig.Var(&conf.Input, envPrefix+"INPUT")
-	envConfig.DurationVar(&conf.StatsInterval.Duration, envPrefix+"STATS_INTERVAL")
-	envConfig.StringVar(&serverList, envPrefix+"SERVERS")
-	envConfig.Var(&conf.MsgTypes, envPrefix+"MESSAGE_TYPES")
-
-	if configFilename != "" {
-		// Parse flags again to override configuration and environment
+		// Parse flags again to override configuration
 		// values.
 		flag.Parse()
 	}
@@ -263,5 +259,6 @@ func parseConfig() (conf *Config, err error) {
 	if conf.APIKey.String() == "" {
 		err = errors.Join(err, errors.New("no API key specified"))
 	}
+
 	return
 }
