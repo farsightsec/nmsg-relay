@@ -1,4 +1,4 @@
-nmsg-relay (0.3.1) debian-fsi; urgency=medium
+nmsg-relay (0.3.1-1) debian-fsi; urgency=medium
 
   * Update dependency versions.
   * Improved environment variable error handling.
