@@ -68,21 +68,28 @@ func runInputLoop(config *Config, input nmsg.Input, output nmsg.Output, addr net
 	wg.Done()
 }
 
-func runInputStats(name string, inputs []nmsg.Input, d time.Duration) {
+func runInputStats(name string, inputs []nmsg.Input, d time.Duration, done <-chan struct{}) {
 	var old uint64
 	if d == 0 {
 		return
 	}
-	for range time.Tick(d) {
-		var total, loss uint64
-		for _, input := range inputs {
-			stats := input.Stats()
-			total += stats.InputContainers
-			loss += stats.LostContainers
+	t := time.NewTicker(d)
+	defer t.Stop()
+	for {
+		select {
+		case <-done:
+			return
+		case <-t.C:
+			var total, loss uint64
+			for _, input := range inputs {
+				stats := input.Stats()
+				total += stats.InputContainers
+				loss += stats.LostContainers
+			}
+			log.Printf("%s: Lost %d containers (%d / %d total)",
+				name, loss-old, loss, total)
+			old = loss
 		}
-		log.Printf("%s: Lost %d containers (%d / %d total)",
-			name, loss-old, loss, total)
-		old = loss
 	}
 }
 
@@ -110,15 +117,18 @@ func publish(config *Config, cli client.Client) {
 		go runInputLoop(config, input, output, addr, &wg)
 	}
 
-	go runInputStats(config.Input.String(), inputs, config.StatsInterval.Duration)
+	done := make(chan struct{})
+	go runInputStats(config.Input.String(), inputs, config.StatsInterval.Duration, done)
 	wg.Wait()
+	close(done)
 	cli.Close()
 }
 
 func main() {
 	config, err := parseConfig()
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("failed to parse configuration: %s", err)
+		return
 	}
 
 	log.Printf("Starting nmsg-relay version %s", Version)

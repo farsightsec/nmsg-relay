@@ -1,3 +1,11 @@
+nmsg-relay (0.3.1-1) debian-fsi; urgency=medium
+
+  * Update dependency versions.
+  * Improved environment variable error handling.
+  * Assorted documentation updates.
+
+ -- DomainTools LLC <software@domaintools.com>  Fri, 02 Oct 2026 14:03:33 -0700
+
 nmsg-relay (0.3.0-1) debian-fsi; urgency=medium
 
   * Add filtering by message type.

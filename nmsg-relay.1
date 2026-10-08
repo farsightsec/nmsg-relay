@@ -14,9 +14,11 @@ nmsg-relay \- Relay NMSG data from local datagram sockets to Farsight Security S
 .br
 .B "          -input (\fIaddr/port\fB|\fIaddr/lowport..highport\fB)"
 .br
-.B "          [ -stats_interval \fIduration\fB] [--flush \fIduration\fB ]
+.B "          [ -stats_interval \fIduration\fB] [--flush \fIduration\fB ]"
 .br
-.B "          [ -heartbeat \fIduration\fB] [--retry \fIduration\fB ]
+.B "          [ -heartbeat \fIduration\fB] [--retry \fIduration\fB ]"
+.br
+.B "          [ -message_type \fIvname:mtype\fB ]"
 .br
 .B "          wss://\fIserver\fB/[session/\fIsession-name\fB]"
 .br
@@ -57,7 +59,7 @@ Provides the SIE channel on which the data will be published.
 
 .TP
 .B -config \fIfile\fB
-Reads configuration from \fIfile\fB
+Reads configuration from \fIfile\fB.
 
 .TP
 .B -flush \fIduration\fB
@@ -80,6 +82,17 @@ for NMSG data. If specified in \fIaddr/port\fR form, \fBnmsg-relay\fR will
 open and listen on a single port. If specified with \fIaddr/lowport..highport\fR
 form, \fBnmsg-relay\fR will listen for NMSG data on \fIaddr\fR using a
 contiguous range of ports between \fIlowport\fR and \fIhighport\fR, inclusive.
+
+.TP
+.B -message_type \fIvname:mtype\fB
+Only relay NMSG data identified with the NMSG vendor ID
+and NMSG message type
+\fIvname:mtype\fR.
+This message type includes the vendor ID and the message type
+separated with a colon, e.g.
+\fIbase:dnstap\fR.
+This option may be used multiple times for multiple message types.
+By default, all message types may be collected.
 
 .TP
 .B -retry \fIduration\fB
@@ -126,6 +139,11 @@ corresponds to \fB-heartbeat\fR option
 corresponds to \fB-input\fR option
 
 .TP
+.B NMSG_RELAY_MESSAGE_TYPES
+corresponds to \fB-message_type\fR option.
+It may contain multiple message types, separated by commas.
+
+.TP
 .B NMSG_RELAY_RETRY
 corresponds to \fB-retry\fR option
 
@@ -133,6 +151,7 @@ corresponds to \fB-retry\fR option
 .B NMSG_RELAY_STATS_INTERVAL
 corresponds to \fB-stats_interval\fR option
 
+.PP
 In addition, the \fBNMSG_RELAY_CONFIG\fR environment variable, if set,
 is interpreted as a path to a configuration file in YAML format.
 The \fBNMSG_RELAY_SERVERS\fR variable may contain a space-separated list of
@@ -146,7 +165,7 @@ reads the config file as a YAML dictionary. The keys in this dictionary
 include:
 
 .TP
-.B apikey
+.B api_key
 corresponds to \fB-apikey\fR option
 
 .TP
@@ -164,6 +183,11 @@ corresponds to \fB-heartbeat\fR option
 .TP
 .B input
 corresponds to \fB-input\fR option
+
+.TP
+.B message_types
+corresponds to \fB-message_type\fR option.
+This key takes a list of strings to contain multiple message types.
 
 .TP
 .B retry
