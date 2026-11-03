@@ -13,7 +13,8 @@ Build-Depends: debhelper-compat (= 13),
                golang-github-farsightsec-go-nmsg-base-dev,
                golang-github-farsightsec-go-nmsg-sie-dev,
                golang-github-farsightsec-sielink-dev,
-               golang-github-farsightsec-sielink-client-dev
+               golang-github-farsightsec-sielink-client-dev,
+	       pkg-config
 Standards-Version: 4.5.1
 XS-Go-Import-Path: github.com/farsightsec/nmsg-relay
 
