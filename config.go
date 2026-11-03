@@ -27,6 +27,17 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Substitute for errors.Join() designed for OS's that do not support Go v1.20.
+func joinErr(a, b error) error {
+	if a == nil {
+		return b
+	}
+	if b == nil {
+		return a
+	}
+	return fmt.Errorf("%s\n%s", a, b)
+}
+
 type mType struct {
 	vid   uint32
 	mtype uint32
@@ -252,16 +263,16 @@ func parseConfig() (conf *Config, err error) {
 	}
 
 	if conf.Channel == 0 {
-		err = errors.Join(err, errors.New("no channel specified"))
+		err = joinErr(err,errors.New("no channel specified"))
 	}
 	if len(conf.Servers) == 0 {
-		err = errors.Join(err, errors.New("no servers specified"))
+		err = joinErr(err,errors.New("no servers specified"))
 	}
 	if conf.Input.Addr == nil {
-		err = errors.Join(err, errors.New("no input address specified"))
+		err = joinErr(err,errors.New("no input address specified"))
 	}
 	if conf.APIKey.String() == "" {
-		err = errors.Join(err, errors.New("no API key specified"))
+		err = joinErr(err,errors.New("no API key specified"))
 	}
 	return
 }
