@@ -5,3 +5,6 @@
 
 override_dh_auto_install:
 	dh_auto_install -- --no-source
+
+# Go emits compressed DWARF debug sections, which dwz cannot handle.
+override_dh_dwz:
