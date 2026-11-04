@@ -263,16 +263,16 @@ func parseConfig() (conf *Config, err error) {
 	}
 
 	if conf.Channel == 0 {
-		err = joinErr(err,errors.New("no channel specified"))
+		err = joinErr(err, errors.New("no channel specified"))
 	}
 	if len(conf.Servers) == 0 {
-		err = joinErr(err,errors.New("no servers specified"))
+		err = joinErr(err, errors.New("no servers specified"))
 	}
 	if conf.Input.Addr == nil {
-		err = joinErr(err,errors.New("no input address specified"))
+		err = joinErr(err, errors.New("no input address specified"))
 	}
 	if conf.APIKey.String() == "" {
-		err = joinErr(err,errors.New("no API key specified"))
+		err = joinErr(err, errors.New("no API key specified"))
 	}
 	return
 }
