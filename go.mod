@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/farsightsec/go-config v0.3.0
-	github.com/farsightsec/go-nmsg v0.4.0
+	github.com/farsightsec/go-nmsg v0.4.1
 	github.com/farsightsec/go-nmsg_sie v0.1.2-0.20230608154303-b9c61e682d7e
 	github.com/farsightsec/sielink v0.1.1
 	github.com/golang/protobuf v1.5.4

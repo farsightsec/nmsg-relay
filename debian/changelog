@@ -1,6 +1,6 @@
 nmsg-relay (0.3.1) debian-fsi; urgency=medium
 
-  * Update dependency versions.
+  * Update dependency versions (esp. go-nmsg v0.4.1).
   * Improved environment variable error handling.
   * Assorted documentation updates.
 
