@@ -14,7 +14,7 @@ import (
 	nmsg "github.com/farsightsec/go-nmsg"
 	"github.com/farsightsec/sielink"
 	"github.com/farsightsec/sielink/client"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 type payloadWriter chan []byte
